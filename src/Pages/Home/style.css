@@ -1,0 +1,14 @@
+div {
+  width: 100vw;
+  height: 100vh;
+  color: #dedede;
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: xx-large;
+  user-select: none;
+}
