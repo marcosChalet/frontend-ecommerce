@@ -1,0 +1,13 @@
+.product-button {
+  background-color: transparent;
+  font-size: 2rem;
+  font-weight: 400;
+  border: 1px black solid;
+  border-radius: 1.5rem;
+  max-width: 21.5rem;
+  max-height: 6.4rem;
+}
+
+.product-button:hover {
+  color: white;
+}
