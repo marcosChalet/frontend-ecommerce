@@ -5,16 +5,16 @@ import { FaMinus } from "react-icons/fa6";
 import "./style.css";
 
 export default function Button({
-  text = "",
   className = "",
   hasPlusIcon = false,
   hasMinusIcon = false,
+  children,
 }: ButtonInterface) {
   return (
-    <button className={className}>
+    <button className={`btn ${className}`}>
       {hasMinusIcon ? <FaMinus /> : null}
       {hasPlusIcon ? <FaPlus /> : null}
-      {text}
+      {children}
     </button>
   );
 }
