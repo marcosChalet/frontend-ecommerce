@@ -1,4 +1,4 @@
-button {
+.btn {
   background-color: white;
   text-transform: capitalize;
   color: black;
@@ -9,9 +9,9 @@ button {
   align-items: center;
   gap: 1rem;
   transition-duration: 500ms;
+  cursor: pointer;
 }
 
-button:hover {
-  cursor: pointer;
-  background-color: black;
+.btn:hover {
+  scale: 1.1;
 }
