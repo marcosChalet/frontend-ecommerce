@@ -2,7 +2,7 @@ import "./style.css";
 
 type Category = {
   url: string;
-  alt: string;
+  alt?: string;
   name: string;
 };
 

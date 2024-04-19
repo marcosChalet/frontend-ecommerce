@@ -9,7 +9,7 @@ import { useState } from "react";
 
 type ProductType = {
   url: string;
-  alt: string;
+  alt?: string;
   name: string;
   shortDescription: string;
   price: number;
