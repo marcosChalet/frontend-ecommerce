@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import ActionButton from "../../Components/ActionButton";
 import AdvantagesSection from "../../Components/AdvantagesSection";
 import Banner from "../../Components/Banner";
@@ -7,10 +9,42 @@ import Header from "../../Components/Header";
 import ProductCard from "../../Components/ProductCard";
 import Main from "../../Components/ui/Main";
 import Section from "../../Components/ui/Section";
-
 import "./style.css";
+import { Category } from "../../interfaces/category.interface";
+import { Product } from "../../interfaces/product.interface";
+
+const CATEGORIES_URL = process.env.REACT_APP_CATEGORIES_URL as string;
+const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
 
 export default function Home() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function getCategories() {
+      try {
+        const categories = await axios.get(CATEGORIES_URL);
+        setCategories(categories.data);
+      } catch (err) {
+        throw new Error(`Error ${err}`);
+      }
+    }
+
+    async function getProducts() {
+      try {
+        const products = await axios.get(
+          `${PRODUCTS_URL}?page=1&perPage=8&order=asc`
+        );
+        setProducts(products.data.products);
+      } catch (err) {
+        throw new Error(`Error ${err}`);
+      }
+    }
+
+    getCategories();
+    getProducts();
+  }, []);
+
   return (
     <>
       <Main>
@@ -20,23 +54,15 @@ export default function Home() {
           <h3 className="category-title">Browse The Range</h3>
 
           <div className="category-list">
-            <CategoryCard
-              name="Dining"
-              alt="Living room with plants and sofa."
-              url="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsb2ZmaWNlNF9waG90b19vZl9hX2ZyYW1lX2luX3RoZV9saXZpbmdfcm9vbV9pbl90aGVfc3R5bF85YWM1MjY1ZS02OTdjLTQ4OWMtYTFmYS03NzgzMjJlMTEwODNfMi5qcGc.jpg"
-            />
-
-            <CategoryCard
-              name="Living"
-              alt="Living room with plants and sofa."
-              url="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsb2ZmaWNlNF9waG90b19vZl9hX2ZyYW1lX2luX3RoZV9saXZpbmdfcm9vbV9pbl90aGVfc3R5bF85YWM1MjY1ZS02OTdjLTQ4OWMtYTFmYS03NzgzMjJlMTEwODNfMi5qcGc.jpg"
-            />
-
-            <CategoryCard
-              name="Bedroom"
-              alt="Living room with plants and sofa."
-              url="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsb2ZmaWNlNF9waG90b19vZl9hX2ZyYW1lX2luX3RoZV9saXZpbmdfcm9vbV9pbl90aGVfc3R5bF85YWM1MjY1ZS02OTdjLTQ4OWMtYTFmYS03NzgzMjJlMTEwODNfMi5qcGc.jpg"
-            />
+            {categories.map((category: Category) => {
+              return (
+                <CategoryCard
+                  key={category.id}
+                  name={category.name}
+                  url={category.image_link ?? ""}
+                />
+              );
+            })}
           </div>
         </Section>
 
@@ -44,18 +70,22 @@ export default function Home() {
           <h3 className="our-products-title">Our Products</h3>
 
           <div className="products-list">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((data: number) => {
+            {products.map((product: Product) => {
               return (
                 <ProductCard
-                  key={data}
-                  name="Grifo"
-                  price={1500000}
-                  shortDescription="Night lamp"
-                  hasDiscount
-                  discount={0.5}
-                  prevPrice={3000000}
-                  url="https://i.postimg.cc/RV4bt66d/abajur.png"
-                  alt="White abajour"
+                  key={product.id}
+                  name={product.name}
+                  isNew={product.is_new}
+                  shortDescription={product.description}
+                  hasDiscount={product.discount_percent ? true : false}
+                  price={
+                    product.discount_price
+                      ? product.discount_price
+                      : product.price
+                  }
+                  discount={product.discount_percent}
+                  prevPrice={product.price}
+                  url={product.image_link ?? ""}
                 />
               );
             })}
