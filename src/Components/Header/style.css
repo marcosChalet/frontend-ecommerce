@@ -8,6 +8,7 @@ header {
   background-color: #fff;
   padding: 0 1rem;
   gap: 0.5rem;
+  margin: 0 auto;
 }
 
 .brand {
@@ -45,6 +46,9 @@ header img {
   gap: 1rem;
   height: 100%;
 }
+.nav-group-2 *:not(:last-child) {
+  display: none;
+}
 
 .nav-group-2 button {
   display: flex;
@@ -59,6 +63,7 @@ header img {
 
 .nav-group-2 button:hover {
   cursor: pointer;
+  background-color: inherit;
 }
 
 .hamburger {
@@ -67,6 +72,9 @@ header img {
 }
 
 @media (min-width: 576px) {
+  .nav-group-2 *:not(:last-child) {
+    display: flex;
+  }
   header img {
     height: 3.3rem;
   }
