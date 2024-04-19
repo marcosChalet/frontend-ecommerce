@@ -3,16 +3,16 @@ import { BsPerson } from "react-icons/bs";
 import { MdSearch } from "react-icons/md";
 import { BsHeart } from "react-icons/bs";
 import { BsCart3 } from "react-icons/bs";
-
-import "./style.css";
+import { BRAND_NAME } from "../../helpers/helper";
 import Logo from "../../assets/logo.svg";
+import "./style.css";
 
 export default function Header() {
   return (
     <header>
       <div className="brand">
         <img draggable={false} src={Logo} alt="Web site logo" />
-        <span className="logo">Furniro</span>
+        <span className="logo">{BRAND_NAME}</span>
       </div>
 
       <nav className="nav-group-1">
