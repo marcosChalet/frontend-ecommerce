@@ -37,11 +37,6 @@
   position: relative;
 }
 
-/* .products-list:after {
-  content: "";
-  flex: auto;
-} */
-
 .our-products-title {
   margin-bottom: 2.5rem;
   font-weight: 700;
