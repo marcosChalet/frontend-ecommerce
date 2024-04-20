@@ -9,9 +9,10 @@ import Header from "../../Components/Header";
 import ProductCard from "../../Components/ProductCard";
 import Main from "../../Components/ui/Main";
 import Section from "../../Components/ui/Section";
-import "./style.css";
+import HomeBanner from "../../assets/home-banner.png";
 import { Category } from "../../interfaces/category.interface";
 import { Product } from "../../interfaces/product.interface";
+import "./style.css";
 
 const CATEGORIES_URL = process.env.REACT_APP_CATEGORIES_URL as string;
 const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
@@ -49,7 +50,7 @@ export default function Home() {
     <>
       <Main>
         <Header />
-        <Banner />
+        <Banner img={HomeBanner} />
         <Section className="category-section">
           <h3 className="category-title">Browse The Range</h3>
 
