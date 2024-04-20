@@ -6,6 +6,7 @@ import { BsCart3 } from "react-icons/bs";
 import { BRAND_NAME } from "../../helpers/helper";
 import Logo from "../../assets/logo.svg";
 import "./style.css";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -16,10 +17,10 @@ export default function Header() {
       </div>
 
       <nav className="nav-group-1">
-        <a href="#home">Home</a>
-        <a href="#shop">Shop</a>
-        <a href="#shop">About</a>
-        <a href="#shop">Contact</a>
+        <Link to="/">Home</Link>
+        <Link to="shop">Shop</Link>
+        <Link to="/">About</Link>
+        <Link to="/">Contact</Link>
       </nav>
 
       <nav className="nav-group-2">
