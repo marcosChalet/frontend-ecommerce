@@ -1,0 +1,152 @@
+.shop-banner {
+  position: relative;
+  max-height: 31.6rem;
+}
+
+.shop-banner-container {
+  background-color: transparent;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 20;
+  inset: 0;
+}
+
+.shop-banner-title {
+  font-weight: 500;
+  font-size: 4.8rem;
+  line-height: 7.2rem;
+}
+
+.shop-breadcrumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 1.6rem;
+  line-height: 24px;
+  color: black;
+}
+
+.shop-breadcrumb strong {
+  font-weight: 500;
+}
+
+.shop-adjust-list {
+  padding: 0 10rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10rem;
+  background-color: #f9f1e7;
+  font-size: 2rem;
+}
+
+.shop-adjust-list > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.3rem;
+}
+
+.adjust-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.adjust-filter-option {
+  cursor: pointer;
+}
+
+.divisory {
+  height: 3rem;
+  width: 2px;
+  background-color: #9f9f9f;
+}
+
+.adjust-total-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.7rem;
+}
+
+.adjust-total-products input {
+  width: 5.5rem;
+  height: 5rem;
+  background-color: white;
+  color: #9f9f9f;
+  text-align: center;
+  margin: 0;
+  padding-left: 1.2rem;
+  border: 0;
+}
+
+.adjust-sort-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.7rem;
+}
+
+.adjust-sort-products input {
+  width: 12rem;
+  height: 5rem;
+  background-color: white;
+  color: #9f9f9f;
+  text-align: center;
+  margin: 0;
+  border: 0;
+}
+
+.products-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3.2rem;
+  position: relative;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.products-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3.8rem;
+}
+
+.btn-select-page {
+  width: 6rem;
+  height: 6rem;
+  border: none;
+  border-radius: 1rem;
+  color: black;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 3rem;
+  margin-bottom: 8.5rem;
+  background-color: #f9f1e7;
+  cursor: pointer;
+  transition-duration: 400ms;
+  border: 1px solid transparent;
+}
+
+.btn-select-page:hover {
+  border: 1px solid #9f9f9f;
+}
+
+.btn-next-page {
+  width: 9.8rem;
+}
+
+.select {
+  background-color: #b88e2f;
+  color: white;
+}
