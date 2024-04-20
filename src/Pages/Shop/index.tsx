@@ -12,6 +12,7 @@ import { PiCirclesFourFill } from "react-icons/pi";
 import { BsViewList } from "react-icons/bs";
 import { Product } from "../../interfaces/product.interface";
 import ProductCard from "../../Components/ProductCard";
+import { Link } from "react-router-dom";
 import "./style.css";
 
 const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
@@ -61,7 +62,10 @@ export default function Shop() {
         <div className="shop-banner-container">
           <h2 className="shop-banner-title">Shop</h2>
           <div className="shop-breadcrumb">
-            <strong>Home</strong> <MdKeyboardArrowRight size={28} /> <p>Shop</p>
+            <Link to="/">
+              <strong>Home</strong>
+            </Link>
+            <MdKeyboardArrowRight size={28} /> <p>Shop</p>
           </div>
         </div>
       </Banner>
