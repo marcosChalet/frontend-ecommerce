@@ -18,7 +18,7 @@ export default function Header() {
 
       <nav className="nav-group-1">
         <Link to="/">Home</Link>
-        <Link to="shop">Shop</Link>
+        <Link to="/shop">Shop</Link>
         <Link to="/">About</Link>
         <Link to="/">Contact</Link>
       </nav>
