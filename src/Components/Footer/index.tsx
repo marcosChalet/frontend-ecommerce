@@ -39,7 +39,7 @@ export default function Footer() {
 
         <hr className="footer-divisor" />
 
-        <p className="rights-msg">{`2023 ${BRAND_NAME.toLowerCase()}. All rights reverved`}</p>
+        <p className="rights-msg">{`2023 ${BRAND_NAME.toLowerCase()}. All rights reserved`}</p>
       </Section>
     </footer>
   );
