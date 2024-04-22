@@ -92,6 +92,11 @@
   border: 0;
 }
 
+.adjust-total-products input[type="number"]:focus {
+  border: 1px solid #3e3d3d;
+  outline: 0;
+}
+
 .adjust-sort-products {
   display: flex;
   justify-content: center;
