@@ -6,8 +6,10 @@ import { CiHeart } from "react-icons/ci";
 
 import "./style.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 type ProductType = {
+  refLink: string;
   url: string;
   alt?: string;
   name: string;
@@ -20,6 +22,7 @@ type ProductType = {
 };
 
 export default function ProductCard({
+  refLink,
   name,
   url,
   alt,
@@ -36,7 +39,8 @@ export default function ProductCard({
   const [hoverProduct, isHoverProduct] = useState(false);
 
   return (
-    <div
+    <Link
+      to={refLink}
       className="product-card"
       onMouseEnter={() => isHoverProduct(true)}
       onMouseLeave={() => isHoverProduct(false)}
@@ -83,6 +87,6 @@ export default function ProductCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

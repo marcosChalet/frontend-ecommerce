@@ -74,6 +74,7 @@ export default function Home() {
             {products.map((product: Product) => {
               return (
                 <ProductCard
+                  refLink={`/product/${product.id}`}
                   key={product.id}
                   name={product.name}
                   isNew={product.is_new}

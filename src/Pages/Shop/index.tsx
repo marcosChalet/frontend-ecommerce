@@ -150,6 +150,7 @@ export default function Shop() {
             if (idx < numShowProducts) {
               return (
                 <ProductCard
+                  refLink={`/product/${product.id}`}
                   key={product.id}
                   name={product.name}
                   isNew={product.is_new}
