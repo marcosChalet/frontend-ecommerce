@@ -32,8 +32,11 @@ export default function Shop() {
   const currentPage = useRef(1);
   const [products, setProducts] = useState<Product[]>([]);
   const [pagesNavList, setPagesNavList] = useState<number[] | null>(null);
+  console.log(Number(localStorage.getItem("@numShowProducts")));
   const [numShowProducts, setNumShowProducts] = useState(
-    Number(localStorage.getItem("@numShowProducts")) ?? DEFAULT_NUMBER_PRODUCTS
+    Number(localStorage.getItem("@numShowProducts")) !== 0
+      ? Number(localStorage.getItem("@numShowProducts"))
+      : DEFAULT_NUMBER_PRODUCTS
   );
   const [paginationData, setPaginationData] = useState<PaginationData | null>(
     null
