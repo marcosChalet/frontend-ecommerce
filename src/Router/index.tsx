@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../Pages/Home";
 import Shop from "../Pages/Shop";
+import SingleProduct from "../Pages/SingleProduct";
+import { loader as rootLoader } from "./root";
 
 export const router = createBrowserRouter([
   {
@@ -10,6 +12,11 @@ export const router = createBrowserRouter([
   {
     path: "shop",
     element: <Shop />,
+  },
+  {
+    path: "product/:id",
+    loader: async ({ params }: any) => rootLoader(params.id),
+    element: <SingleProduct />,
   },
   {
     path: "*",
