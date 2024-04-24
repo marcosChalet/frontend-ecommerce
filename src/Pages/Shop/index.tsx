@@ -32,7 +32,6 @@ export default function Shop() {
   const currentPage = useRef(1);
   const [products, setProducts] = useState<Product[]>([]);
   const [pagesNavList, setPagesNavList] = useState<number[] | null>(null);
-  console.log(Number(localStorage.getItem("@numShowProducts")));
   const [numShowProducts, setNumShowProducts] = useState(
     Number(localStorage.getItem("@numShowProducts")) !== 0
       ? Number(localStorage.getItem("@numShowProducts"))
@@ -45,7 +44,8 @@ export default function Shop() {
   async function getProducts(
     page: number,
     perPage: number,
-    order: "asc" | "desc" = "asc"
+    order: "asc" | "desc" = "asc",
+    setTotal?: (val: number) => void
   ) {
     try {
       const products = await axios.get(
@@ -53,6 +53,7 @@ export default function Shop() {
       );
       const fetchProducts = products.data.products;
       setProducts(() => fetchProducts);
+      setTotal && setTotal(fetchProducts.length as any);
       const data: PaginationData = {
         hasNextPage: products.data.hasNextPage,
         hasPrevPage: products.data.hasPrevPage,
@@ -72,10 +73,15 @@ export default function Shop() {
   }
 
   function handleChange(val: number) {
-    getProducts(1, val, productOrder);
-    if (val <= (paginationData?.totalProducts ?? 0)) {
-      setNumShowProducts(() => val);
+    if (val > (paginationData?.totalProducts ?? 0)) {
+      return;
     }
+
+    if (val <= (paginationData?.totalProducts ?? 0)) {
+      getProducts(1, val, productOrder);
+    }
+
+    setNumShowProducts(() => val);
   }
 
   function nextPage(page: number) {
@@ -95,7 +101,8 @@ export default function Shop() {
       numProducts = DEFAULT_NUMBER_PRODUCTS;
     }
 
-    getProducts(1, numProducts, productOrder);
+    getProducts(1, numProducts, productOrder, setNumShowProducts);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
