@@ -33,10 +33,8 @@ export default function Home() {
 
     async function getProducts() {
       try {
-        const products = await axios.get(
-          `${PRODUCTS_URL}?page=1&perPage=8&order=asc`
-        );
-        setProducts(products.data.products);
+        const products = await axios.get(`${PRODUCTS_URL}/our-products`);
+        setProducts(products.data);
       } catch (err) {
         throw new Error(`Error ${err}`);
       }
