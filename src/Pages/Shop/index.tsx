@@ -5,14 +5,15 @@ import Header from "../../Components/Header";
 import Section from "../../Components/ui/Section";
 import ShopBanner from "../../assets/shop-banner.png";
 import AdvantagesSection from "../../Components/AdvantagesSection";
+import ProductCard from "../../Components/ProductCard";
 import Footer from "../../Components/Footer";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { PiCirclesFourFill } from "react-icons/pi";
 import { BsViewList } from "react-icons/bs";
-import { Product } from "../../interfaces/product.interface";
-import ProductCard from "../../Components/ProductCard";
+import { FaGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { Product } from "../../interfaces/product.interface";
 import "./style.css";
 
 const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
@@ -121,6 +122,10 @@ export default function Shop() {
         </div>
       </Banner>
       <div className="shop-adjust-list">
+        <div className="shop-adjust-list-mobile">
+          <FaGear />
+          <h4>Configure</h4>
+        </div>
         <div>
           <div className="adjust-filter">
             <TbAdjustmentsHorizontal />
