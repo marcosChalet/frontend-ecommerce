@@ -53,7 +53,11 @@ export default function ProductCard({
       <img className="product-image" src={url} alt={alt} />
       <div className="product-data-wrapper">
         <h4 className="product-name">{name}</h4>
-        <p className="product-short-description">{shortDescription}</p>
+        <p className="product-short-description">
+          {shortDescription.length > 30
+            ? shortDescription.substring(0, 30).concat("...")
+            : shortDescription}
+        </p>
         <div className="product-price-whrapper">
           <p className="product-price">
             {CONCURRENCY_TYPE}{" "}
