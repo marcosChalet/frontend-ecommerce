@@ -10,5 +10,8 @@ export interface Product {
   discount_price?: number;
   discount_percent?: number;
   is_new?: boolean;
+  colors?: { color_hex: string }[];
+  sizes?: { name: string }[];
   image_link?: string;
+  other_images_link?: string;
 }
