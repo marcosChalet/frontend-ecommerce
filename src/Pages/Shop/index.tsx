@@ -201,12 +201,12 @@ export default function Shop() {
           )}
 
           {pagesNavList?.map((_, idx) => {
-            return (
+            return idx < 3 ? (
               <button
                 key={idx}
-                className={`btn-select-page ${
-                  idx + 1 === currentPage.current ? "select" : ""
-                }`}
+                className={`btn-select-page
+                  ${idx + 1 === currentPage.current ? "select" : ""}
+                `}
                 onClick={() => {
                   currentPage.current = idx + 1;
                   nextPage(currentPage.current);
@@ -214,8 +214,13 @@ export default function Shop() {
               >
                 {idx + 1}
               </button>
+            ) : (
+              <></>
             );
           })}
+          {pagesNavList && pagesNavList.length > 3 && (
+            <div className="btn-select-page dots-select-page">...</div>
+          )}
           <button
             className="btn-next-page btn-select-page"
             onClick={(e) => {
