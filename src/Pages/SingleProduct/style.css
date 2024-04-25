@@ -163,6 +163,12 @@
   flex-wrap: wrap;
 }
 
+.product-option-list li {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
 .product-option-list-title {
   font-weight: 400;
   font-size: 1.4rem;
