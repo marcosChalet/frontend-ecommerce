@@ -25,6 +25,7 @@
   line-height: 3rem;
   width: 100%;
   cursor: default;
+  color: #333333;
 }
 
 @media (min-width: 768px) {
