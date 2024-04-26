@@ -10,6 +10,11 @@ export const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "shop/category/:id",
+    loader: ({ params }: any): number => +params.id,
+    element: <Shop />,
+  },
+  {
     path: "shop",
     element: <Shop />,
   },

@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "../interfaces/product.interface";
+import { useLoaderData } from "react-router-dom";
 
 const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
 const DEFAULT_NUMBER_PRODUCTS = 16;
@@ -18,9 +19,9 @@ type PaginationData = {
 type ProductOrder = "asc" | "desc";
 
 export default function usePagination() {
+  const categoryId = useLoaderData() as number;
   const [productOrder, setProductOrder] = useState<ProductOrder>("asc");
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const [products, setProducts] = useState<Product[]>([]);
   const [pagesNavList, setPagesNavList] = useState<number[] | null>(null);
   const [numShowProducts, setNumShowProducts] = useState(
@@ -37,11 +38,15 @@ export default function usePagination() {
     perPage: number,
     order: ProductOrder = "asc",
     setTotal?: (val: number) => void,
-    orderType: "price" | "discount_percent" = "price"
+    orderType: "price" | "discount_percent" = "price",
+    byCategory: boolean = false,
+    category?: number
   ) {
     try {
       const products = await axios.get(
-        `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}&orderType=${orderType}`
+        byCategory
+          ? `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}&orderType=${orderType}&category=${category}`
+          : `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}&orderType=${orderType}`
       );
       const fetchProducts = products.data.products;
       setProducts(() => fetchProducts);
@@ -105,11 +110,28 @@ export default function usePagination() {
     setProductOrder("desc");
   }
 
+  function pageFilterByCategory(categoryId: number) {
+    getProducts(
+      1,
+      DEFAULT_NUMBER_PRODUCTS,
+      "asc",
+      setNumShowProducts,
+      "price",
+      true,
+      categoryId
+    );
+  }
+
   useEffect(() => {
     localStorage.setItem("@numShowProducts", numShowProducts.toString());
   }, [numShowProducts, products]);
 
   useEffect(() => {
+    if (categoryId) {
+      pageFilterByCategory(categoryId);
+      return;
+    }
+
     let numProducts: number | null = Number(
       localStorage.getItem("@numShowProducts")
     );
@@ -123,16 +145,17 @@ export default function usePagination() {
 
   return {
     products,
-    numShowProducts,
     currentPage,
     pagesNavList,
+    numShowProducts,
     totalProducts: paginationData?.totalProducts,
     hasNextPage: paginationData?.hasNextPage,
+    pageFilterByCategory,
+    changeSortOrder,
     handleChange,
     changePage,
+    pageFilter,
     nextPage,
     prevPage,
-    changeSortOrder,
-    pageFilter,
   };
 }

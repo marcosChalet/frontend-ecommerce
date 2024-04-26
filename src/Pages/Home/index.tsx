@@ -59,6 +59,7 @@ export default function Home() {
                   key={category.id}
                   name={category.name}
                   url={category.image_link ?? ""}
+                  categoryId={category.id}
                 />
               );
             })}
