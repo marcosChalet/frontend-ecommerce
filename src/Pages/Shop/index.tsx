@@ -13,23 +13,25 @@ import { BsViewList } from "react-icons/bs";
 import { FaGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Product } from "../../interfaces/product.interface";
-import { usePagination } from "../../Hooks/page";
+import usePagination from "../../Hooks/page";
 import "./style.css";
 
 export default function Shop() {
   const {
     products,
+    currentPage,
+    pagesNavList,
     totalProducts,
+    numShowProducts,
+    changeSortOrder,
+    handleChange,
+    pageFilter,
     changePage,
     nextPage,
     prevPage,
-    pagesNavList,
-    changeSortOrder,
-    handleChange,
-    currentPage,
-    numShowProducts,
   } = usePagination();
   const [activeDropdown, setActiveDropdown] = useState<boolean>(false);
+  const [sortDisplay, setSortDisplay] = useState<string>("Default");
 
   return (
     <>
@@ -83,22 +85,40 @@ export default function Shop() {
               className="adjust-sort-products-by"
               onClick={() => setActiveDropdown((prev) => !prev)}
             >
-              Default
+              {sortDisplay}
             </button>
             {activeDropdown && (
               <ul className="sort-options-dropdown">
                 <li>
-                  <button onClick={() => changeSortOrder("asc")}>
+                  <button
+                    onClick={() => {
+                      changeSortOrder("asc");
+                      setActiveDropdown(false);
+                      setSortDisplay("Price -");
+                    }}
+                  >
                     Price: lowest first
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => changeSortOrder("asc")}>
+                  <button
+                    onClick={() => {
+                      changeSortOrder("desc");
+                      setActiveDropdown(false);
+                      setSortDisplay("Price +");
+                    }}
+                  >
                     Price: highest first
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => changeSortOrder("asc")}>
+                  <button
+                    onClick={() => {
+                      pageFilter();
+                      setActiveDropdown(false);
+                      setSortDisplay("Price %");
+                    }}
+                  >
                     Discount: highest first
                   </button>
                 </li>

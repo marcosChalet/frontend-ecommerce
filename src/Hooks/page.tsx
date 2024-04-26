@@ -17,7 +17,7 @@ type PaginationData = {
 
 type ProductOrder = "asc" | "desc";
 
-export function usePagination() {
+export default function usePagination() {
   const [productOrder, setProductOrder] = useState<ProductOrder>("asc");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -36,11 +36,12 @@ export function usePagination() {
     page: number,
     perPage: number,
     order: ProductOrder = "asc",
-    setTotal?: (val: number) => void
+    setTotal?: (val: number) => void,
+    orderType: "price" | "discount_percent" = "price"
   ) {
     try {
       const products = await axios.get(
-        `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}`
+        `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}&orderType=${orderType}`
       );
       const fetchProducts = products.data.products;
       setProducts(() => fetchProducts);
@@ -82,29 +83,31 @@ export function usePagination() {
 
   function nextPage() {
     if (paginationData?.hasNextPage) {
-      setCurrentPage((prev) => prev + 1);
       getProducts(currentPage + 1, numShowProducts, productOrder);
+      setCurrentPage((prev) => prev + 1);
     }
   }
 
   function prevPage() {
     if (paginationData?.hasPrevPage) {
-      setCurrentPage((prev) => prev - 1);
       getProducts(currentPage - 1, numShowProducts, productOrder);
+      setCurrentPage((prev) => prev - 1);
     }
   }
 
   function changeSortOrder(order: ProductOrder) {
+    getProducts(currentPage, numShowProducts, order);
     setProductOrder(order);
+  }
+
+  function pageFilter() {
+    getProducts(1, numShowProducts, "desc", undefined, "discount_percent");
+    setProductOrder("desc");
   }
 
   useEffect(() => {
     localStorage.setItem("@numShowProducts", numShowProducts.toString());
   }, [numShowProducts, products]);
-
-  useEffect(() => {
-    getProducts(currentPage, numShowProducts, productOrder);
-  }, [productOrder]);
 
   useEffect(() => {
     let numProducts: number | null = Number(
@@ -130,5 +133,6 @@ export function usePagination() {
     nextPage,
     prevPage,
     changeSortOrder,
+    pageFilter,
   };
 }
