@@ -40,15 +40,17 @@ export default function SingleProduct() {
   useEffect(() => {
     async function getProducts() {
       try {
-        const products = await axios.get(`${PRODUCTS_URL}/related-products`);
-        setProducts(products.data);
+        const products = await axios.get(
+          `${PRODUCTS_URL}/?page=1&perPage=4&order=asc&orderType=category_id&category=${productData.data.category_id}`
+        );
+        setProducts(products.data.products);
       } catch (err) {
         throw new Error(`Error ${err}`);
       }
     }
 
     getProducts();
-  }, []);
+  });
 
   return (
     <>
