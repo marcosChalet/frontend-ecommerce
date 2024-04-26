@@ -4,6 +4,10 @@ import { FaMinus } from "react-icons/fa6";
 
 import "./style.css";
 
+function scrollTo() {
+  window.scrollTo({ top: 0 });
+}
+
 export default function Button({
   className = "",
   hasPlusIcon = false,
@@ -11,7 +15,7 @@ export default function Button({
   children,
 }: ButtonInterface) {
   return (
-    <button className={`btn ${className}`}>
+    <button onClick={scrollTo} className={`btn ${className}`}>
       {hasMinusIcon ? <FaMinus /> : null}
       {hasPlusIcon ? <FaPlus /> : null}
       {children}
