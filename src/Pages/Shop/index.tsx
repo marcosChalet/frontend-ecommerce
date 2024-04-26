@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Banner from "../../Components/Banner";
 import Header from "../../Components/Header";
 import Section from "../../Components/ui/Section";
@@ -14,98 +13,23 @@ import { BsViewList } from "react-icons/bs";
 import { FaGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Product } from "../../interfaces/product.interface";
+import { usePagination } from "../../Hooks/page";
 import "./style.css";
 
-const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
-const DEFAULT_NUMBER_PRODUCTS = 16;
-type PaginationData = {
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-  nextPage: string;
-  pageCount: number;
-  prevPage: string;
-  productCount: number;
-  totalProducts: number;
-};
-
 export default function Shop() {
-  let productOrder: "asc" | "desc" = "asc";
-  const currentPage = useRef(1);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [pagesNavList, setPagesNavList] = useState<number[] | null>(null);
-  const [numShowProducts, setNumShowProducts] = useState(
-    Number(localStorage.getItem("@numShowProducts")) !== 0
-      ? Number(localStorage.getItem("@numShowProducts"))
-      : DEFAULT_NUMBER_PRODUCTS
-  );
-  const [paginationData, setPaginationData] = useState<PaginationData | null>(
-    null
-  );
-
-  async function getProducts(
-    page: number,
-    perPage: number,
-    order: "asc" | "desc" = "asc",
-    setTotal?: (val: number) => void
-  ) {
-    try {
-      const products = await axios.get(
-        `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}`
-      );
-      const fetchProducts = products.data.products;
-      setProducts(() => fetchProducts);
-      setTotal && setTotal(fetchProducts.length as any);
-      const data: PaginationData = {
-        hasNextPage: products.data.hasNextPage,
-        hasPrevPage: products.data.hasPrevPage,
-        nextPage: products.data.nextPage,
-        pageCount: products.data.pageCount,
-        prevPage: products.data.prevPage,
-        productCount: products.data.productCount,
-        totalProducts: products.data.totalProducts,
-      };
-      setPagesNavList(() =>
-        Array.from({ length: data.pageCount }, (_, i) => i + 1)
-      );
-      setPaginationData(() => data);
-    } catch (err) {
-      throw new Error(`Error ${err}`);
-    }
-  }
-
-  function handleChange(val: number) {
-    if (val > (paginationData?.totalProducts ?? 0)) {
-      return;
-    }
-
-    if (val <= (paginationData?.totalProducts ?? 0)) {
-      getProducts(1, val, productOrder);
-    }
-
-    setNumShowProducts(() => val);
-  }
-
-  function nextPage(page: number) {
-    getProducts(page, numShowProducts);
-  }
-
-  useEffect(() => {
-    localStorage.setItem("@numShowProducts", numShowProducts.toString());
-  }, [numShowProducts, products]);
-
-  useEffect(() => {
-    let numProducts: number | null = Number(
-      localStorage.getItem("@numShowProducts")
-    );
-
-    if (numProducts === null) {
-      numProducts = DEFAULT_NUMBER_PRODUCTS;
-    }
-
-    getProducts(1, numProducts, productOrder, setNumShowProducts);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {
+    products,
+    totalProducts,
+    changePage,
+    nextPage,
+    prevPage,
+    pagesNavList,
+    changeSortOrder,
+    handleChange,
+    currentPage,
+    numShowProducts,
+  } = usePagination();
+  const [activeDropdown, setActiveDropdown] = useState<boolean>(false);
 
   return (
     <>
@@ -135,14 +59,14 @@ export default function Shop() {
           <BsViewList className="adjust-filter-option" />
           <div className="divisory" />
           <p>
-            Showing 1–{numShowProducts} of {paginationData?.totalProducts}{" "}
-            results
+            Showing 1–{numShowProducts} of {totalProducts} results
           </p>
         </div>
         <div>
           <div className="adjust-total-products">
             <p>Show</p>
             <input
+              id="total-products"
               type="number"
               value={numShowProducts}
               min={1}
@@ -155,7 +79,31 @@ export default function Shop() {
           </div>
           <div className="adjust-sort-products">
             <p>Sort by</p>
-            <input type="text" defaultValue={"Default"} disabled />
+            <button
+              className="adjust-sort-products-by"
+              onClick={() => setActiveDropdown((prev) => !prev)}
+            >
+              Default
+            </button>
+            {activeDropdown && (
+              <ul className="sort-options-dropdown">
+                <li>
+                  <button onClick={() => changeSortOrder("asc")}>
+                    Price: lowest first
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => changeSortOrder("asc")}>
+                    Price: highest first
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => changeSortOrder("asc")}>
+                    Discount: highest first
+                  </button>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </div>
@@ -165,8 +113,8 @@ export default function Shop() {
             if (idx < numShowProducts) {
               return (
                 <ProductCard
-                  refLink={`/product/${product.id}`}
                   key={product.id}
+                  refLink={`/product/${product.id}`}
                   name={product.name}
                   isNew={product.is_new}
                   shortDescription={product.description}
@@ -187,14 +135,10 @@ export default function Shop() {
         </div>
 
         <div className="products-navigation">
-          {currentPage.current > 1 && (
+          {currentPage > 1 && (
             <button
               className="btn-next-page btn-select-page"
-              onClick={(e) => {
-                paginationData?.pageCount === 1 && e.preventDefault();
-                currentPage.current -= 1;
-                nextPage(currentPage.current);
-              }}
+              onClick={prevPage}
             >
               Prev
             </button>
@@ -205,32 +149,18 @@ export default function Shop() {
               <button
                 key={idx}
                 className={`btn-select-page
-                  ${idx + 1 === currentPage.current ? "select" : ""}
+                  ${idx + 1 === currentPage ? "select" : ""}
                 `}
-                onClick={() => {
-                  currentPage.current = idx + 1;
-                  nextPage(currentPage.current);
-                }}
+                onClick={() => changePage(idx + 1)}
               >
                 {idx + 1}
               </button>
-            ) : (
-              <></>
-            );
+            ) : null;
           })}
           {pagesNavList && pagesNavList.length > 3 && (
             <div className="btn-select-page dots-select-page">...</div>
           )}
-          <button
-            className="btn-next-page btn-select-page"
-            onClick={(e) => {
-              if (paginationData?.hasNextPage) {
-                paginationData?.pageCount === 1 && e.preventDefault();
-                currentPage.current += 1;
-                nextPage(currentPage.current);
-              }
-            }}
-          >
+          <button className="btn-next-page btn-select-page" onClick={nextPage}>
             Next
           </button>
         </div>
