@@ -1,8 +1,27 @@
+import { useRef } from "react";
 import { ADDRESS, BRAND_NAME, LOCATION } from "../../helpers/helper";
 import Section from "../ui/Section";
 import "./style.css";
+import axios from "axios";
+
+const EMAIL_URL = process.env.REACT_APP_EMAIL_URL ?? "";
 
 export default function Footer() {
+  const emailInput = useRef<HTMLInputElement>(null);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    axios.post(EMAIL_URL.toString(), {
+      emailTo: emailInput.current?.value,
+    });
+
+    if (emailInput.current) {
+      emailInput.current.value = "";
+      emailInput.current.placeholder = "₊˚⊹♡ Successfully Registered";
+    }
+  }
+
   return (
     <footer>
       <Section>
@@ -30,14 +49,20 @@ export default function Footer() {
 
           <div className="footer-col">
             <h4>Newsletter</h4>
-            <div className="newsletter">
+            <form
+              className="newsletter"
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+                handleSubmit(e)
+              }
+            >
               <input
+                ref={emailInput}
                 id="email-newsletter"
                 type="email"
                 placeholder="Enter Your Email Address"
               />
-              <button>SUBSCRIBE</button>
-            </div>
+              <button type="submit">SUBSCRIBE</button>
+            </form>
           </div>
         </div>
 
