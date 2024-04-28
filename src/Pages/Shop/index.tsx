@@ -13,7 +13,7 @@ import { BsViewList } from "react-icons/bs";
 import { FaGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Product } from "../../interfaces/product.interface";
-import usePagination from "../../Hooks/page";
+import usePagination from "../../Hooks/shopPage";
 import "./style.css";
 
 export default function Shop() {
@@ -24,7 +24,7 @@ export default function Shop() {
     totalProducts,
     numShowProducts,
     changeSortOrder,
-    handleChange,
+    changeNumShowProducts,
     pageFilter,
     changePage,
     nextPage,
@@ -73,7 +73,7 @@ export default function Shop() {
               value={numShowProducts}
               min={1}
               max={50}
-              onChange={(e) => handleChange(+e.target.value)}
+              onChange={(e) => changeNumShowProducts(+e.target.value)}
               onKeyDown={(event) => {
                 event.preventDefault();
               }}
