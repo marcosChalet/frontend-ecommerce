@@ -12,7 +12,6 @@ import Section from "../../Components/ui/Section";
 import HomeBanner from "../../assets/home-banner.png";
 import { Category } from "../../interfaces/category.interface";
 import { Product } from "../../interfaces/product.interface";
-import { Link } from "react-router-dom";
 import "./style.css";
 
 const CATEGORIES_URL = process.env.REACT_APP_CATEGORIES_URL as string;
@@ -93,9 +92,7 @@ export default function Home() {
             })}
           </div>
 
-          <Link to={"/shop"}>
-            <ActionButton className="show-more">Show More</ActionButton>
-          </Link>
+          <ActionButton className="show-more">Show More</ActionButton>
         </Section>
 
         <AdvantagesSection />
