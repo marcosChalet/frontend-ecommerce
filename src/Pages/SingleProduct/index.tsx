@@ -5,7 +5,7 @@ import Footer from "../../Components/Footer";
 import ProductCard from "../../Components/ProductCard";
 import ActionButton from "../../Components/ActionButton";
 import ProductButton from "../../Components/ProductButton";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { Product } from "../../interfaces/product.interface";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -37,6 +37,7 @@ export default function SingleProduct() {
   const [size, setSize] = useState<null | number>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const product: Product = productData.data;
+  const principalImageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     async function getProducts() {
@@ -53,6 +54,12 @@ export default function SingleProduct() {
 
     getProducts();
   });
+
+  function changeImage(img: string) {
+    if (principalImageRef.current) {
+      principalImageRef.current.src = img;
+    }
+  }
 
   return (
     <>
@@ -73,6 +80,7 @@ export default function SingleProduct() {
                 {product.other_images_link?.split(";").map((img: string) => {
                   return (
                     <img
+                      onClick={() => changeImage(img)}
                       key={img}
                       className="product-thumbnail"
                       src={img}
@@ -80,9 +88,16 @@ export default function SingleProduct() {
                     />
                   );
                 })}
+                <img
+                  onClick={() => changeImage(product.image_link ?? "")}
+                  className="product-thumbnail"
+                  src={product.image_link}
+                  alt=""
+                />
               </div>
             ) : null}
             <img
+              ref={principalImageRef}
               className="product-principal-image"
               src={product.image_link}
               alt=""
