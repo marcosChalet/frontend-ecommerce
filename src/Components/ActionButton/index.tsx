@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import ButtonInterface from "../../interfaces/button.interface";
 import Button from "../ui/Button";
 import "./style.css";
