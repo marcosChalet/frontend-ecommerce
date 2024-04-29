@@ -13,9 +13,17 @@ export default function Button({
   hasPlusIcon = false,
   hasMinusIcon = false,
   children,
-}: ButtonInterface) {
+  notScrollTop = false,
+  click,
+}: ButtonInterface & { notScrollTop?: boolean }) {
   return (
-    <button onClick={scrollTo} className={`btn ${className}`}>
+    <button
+      onClick={() => {
+        !notScrollTop && scrollTo();
+        click && click();
+      }}
+      className={`btn ${className}`}
+    >
       {hasMinusIcon ? <FaMinus /> : null}
       {hasPlusIcon ? <FaPlus /> : null}
       {children}

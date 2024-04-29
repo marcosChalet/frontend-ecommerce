@@ -35,14 +35,16 @@ export default function SingleProduct() {
   const [totalProducts, setTotalProducts] = useState(1);
   const [color, setColor] = useState<null | number>(null);
   const [size, setSize] = useState<null | number>(null);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const product: Product = productData.data;
 
   useEffect(() => {
     async function getProducts() {
       try {
         const products = await axios.get(
-          `${PRODUCTS_URL}/?page=1&perPage=4&order=asc&orderType=category_id&category=${productData.data.category_id}`
+          `${PRODUCTS_URL}/?page=1&perPage=8&order=asc&orderType=category_id&category=${productData.data.category_id}`
         );
+
         setProducts(products.data.products);
       } catch (err) {
         throw new Error(`Error ${err}`);
@@ -51,6 +53,10 @@ export default function SingleProduct() {
 
     getProducts();
   });
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isExpanded]);
 
   return (
     <>
@@ -227,8 +233,8 @@ export default function SingleProduct() {
         <div className="related-products">
           <h2>Related Products</h2>
           <div className="products-list">
-            {products.map((product: Product) => {
-              return (
+            {products.map((product: Product, idx: number) =>
+              !isExpanded && idx > 3 ? null : (
                 <ProductCard
                   refLink={`/product/${product.id}`}
                   key={product.id}
@@ -245,13 +251,23 @@ export default function SingleProduct() {
                   prevPrice={product.price}
                   url={product.image_link ?? ""}
                 />
-              );
-            })}
+              )
+            )}
           </div>
 
-          <Link to={"/shop"}>
-            <ActionButton className="show-more">Show More</ActionButton>
-          </Link>
+          {isExpanded ? (
+            <Link to={"/shop"}>
+              <ActionButton className="show-more">Show More</ActionButton>
+            </Link>
+          ) : (
+            <ActionButton
+              click={() => setIsExpanded(true)}
+              notScrollTop
+              className="show-more"
+            >
+              Show More
+            </ActionButton>
+          )}
         </div>
       </Section>
       <Footer />
