@@ -54,10 +54,6 @@ export default function SingleProduct() {
     getProducts();
   });
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isExpanded]);
-
   return (
     <>
       <Header />
