@@ -248,7 +248,10 @@ export default function SingleProduct() {
               );
             })}
           </div>
-          <ActionButton className="show-more">Show More</ActionButton>
+
+          <Link to={"/shop"}>
+            <ActionButton className="show-more">Show More</ActionButton>
+          </Link>
         </div>
       </Section>
       <Footer />
