@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Banner from "../../Components/Banner";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
@@ -6,14 +6,15 @@ import usePagination from "../../Hooks/shopPage";
 import Section from "../../Components/ui/Section";
 import ShopBanner from "../../assets/shop-banner.png";
 import AdvantagesSection from "../../Components/AdvantagesSection";
+import ProductsList from "../../Components/ProductsList";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { PiCirclesFourFill } from "react-icons/pi";
 import { BsViewList } from "react-icons/bs";
 import { FaGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import debounce from "lodash.debounce";
 import "./style.css";
-import ProductsList from "../../Components/ProductsList";
 
 export default function Shop() {
   const {
@@ -24,6 +25,7 @@ export default function Shop() {
     numShowProducts,
     changeSortOrder,
     changeNumShowProducts,
+    setNumShowProducts,
     pageFilter,
     changePage,
     nextPage,
@@ -31,6 +33,17 @@ export default function Shop() {
   } = usePagination();
   const [activeDropdown, setActiveDropdown] = useState<boolean>(false);
   const [sortDisplay, setSortDisplay] = useState<string>("Default");
+
+  const debouncedChangeProducts = useRef(
+    debounce((val: number) => {
+      changeNumShowProducts(val);
+    }, 1000)
+  ).current;
+
+  function handleChange(numProducts: number) {
+    setNumShowProducts(numProducts);
+    debouncedChangeProducts(numProducts);
+  }
 
   return (
     <>
@@ -72,7 +85,7 @@ export default function Shop() {
               value={numShowProducts}
               min={1}
               max={50}
-              onChange={(e) => changeNumShowProducts(+e.target.value)}
+              onChange={(e) => handleChange(+e.target.value)}
               onKeyDown={(event) => {
                 event.preventDefault();
               }}

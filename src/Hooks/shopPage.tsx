@@ -95,10 +95,6 @@ export default function usePagination() {
   }
 
   async function changeNumShowProducts(val: number) {
-    if (val > (paginationData?.totalProducts ?? 0)) {
-      return;
-    }
-
     const { products, pageData } = await getProducts(
       1,
       val,
@@ -107,7 +103,6 @@ export default function usePagination() {
     );
 
     buildPage(products, pageData, undefined);
-    setNumShowProducts(() => val);
   }
 
   async function changePage(page: number) {
@@ -216,6 +211,7 @@ export default function usePagination() {
     numShowProducts,
     totalProducts: paginationData?.totalProducts,
     hasNextPage: paginationData?.hasNextPage,
+    setNumShowProducts,
     pageFilterByCategory,
     changeSortOrder,
     changeNumShowProducts,
