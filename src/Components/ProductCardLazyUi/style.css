@@ -1,0 +1,25 @@
+.lazy-card {
+  width: 28.5rem;
+  height: fit-content;
+}
+
+.lazy-card-img {
+  border-radius: 0 !important;
+  height: 30.1rem;
+  background: rgba(10, 10, 10, 0.1);
+}
+
+.lazy-card-title {
+  height: 2.9rem;
+  background: rgba(135, 135, 135, 0.1);
+}
+
+.lazy-card-description {
+  height: 2.4rem;
+  background: rgba(80, 80, 80, 0.1);
+}
+
+.lazy-card-price {
+  height: 3rem;
+  background: rgba(135, 135, 135, 0.1);
+}
