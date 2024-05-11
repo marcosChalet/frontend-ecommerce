@@ -1,7 +1,6 @@
 import axios from "axios";
 import AdvantagesSection from "../../Components/AdvantagesSection";
 import CategoryCardLazyUi from "../../Components/CategoryCardLazyUi";
-import ProductCardLazyUi from "../../Components/ProductCardLazyUi";
 import ActionButton from "../../Components/ActionButton";
 import HomeBanner from "../../assets/home-banner.png";
 import Section from "../../Components/ui/Section";
@@ -14,11 +13,11 @@ import { Product } from "../../interfaces/product.interface";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import ProductsList from "../../Components/ProductsList";
 
 const CATEGORIES_URL = process.env.REACT_APP_CATEGORIES_URL as string;
 const PRODUCTS_URL = process.env.REACT_APP_PRODUCTS_URL as string;
 const CategoryCard = lazy(() => import("../../Components/CategoryCard"));
-const ProductCard = lazy(() => import("../../Components/ProductCard"));
 
 export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -72,30 +71,7 @@ export default function Home() {
 
         <Section className="our-products-section">
           <h3 className="our-products-title">Our Products</h3>
-          <div className="products-list">
-            {products.map((product: Product) => {
-              return (
-                <Suspense key={product.id} fallback={<ProductCardLazyUi />}>
-                  <ProductCard
-                    refLink={`/product/${product.id}`}
-                    name={product.name}
-                    isNew={product.is_new}
-                    shortDescription={product.description}
-                    hasDiscount={product.discount_percent ? true : false}
-                    price={
-                      product.discount_price
-                        ? product.discount_price
-                        : product.price
-                    }
-                    discount={product.discount_percent}
-                    prevPrice={product.price}
-                    url={product.image_link ?? ""}
-                  />
-                </Suspense>
-              );
-            })}
-          </div>
-
+          <ProductsList products={products} />
           <Link to={"/shop"}>
             <ActionButton className="show-more">Show More</ActionButton>
           </Link>

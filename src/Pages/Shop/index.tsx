@@ -1,13 +1,11 @@
-import { Suspense, lazy, useState } from "react";
+import { useState } from "react";
 import Banner from "../../Components/Banner";
 import Header from "../../Components/Header";
 import Footer from "../../Components/Footer";
 import usePagination from "../../Hooks/shopPage";
 import Section from "../../Components/ui/Section";
 import ShopBanner from "../../assets/shop-banner.png";
-import ProductCardLazyUi from "../../Components/ProductCardLazyUi";
 import AdvantagesSection from "../../Components/AdvantagesSection";
-import { Product } from "../../interfaces/product.interface";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { PiCirclesFourFill } from "react-icons/pi";
@@ -15,6 +13,7 @@ import { BsViewList } from "react-icons/bs";
 import { FaGear } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import "./style.css";
+import ProductsList from "../../Components/ProductsList";
 
 export default function Shop() {
   const {
@@ -32,7 +31,6 @@ export default function Shop() {
   } = usePagination();
   const [activeDropdown, setActiveDropdown] = useState<boolean>(false);
   const [sortDisplay, setSortDisplay] = useState<string>("Default");
-  const ProductCard = lazy(() => import("../../Components/ProductCard"));
 
   return (
     <>
@@ -129,33 +127,7 @@ export default function Shop() {
         </div>
       </div>
       <Section>
-        <div className="products-list">
-          {products.map((product: Product, idx: number) => {
-            if (idx < numShowProducts) {
-              return (
-                <Suspense key={product.id} fallback={<ProductCardLazyUi />}>
-                  <ProductCard
-                    refLink={`/product/${product.id}`}
-                    name={product.name}
-                    isNew={product.is_new}
-                    shortDescription={product.description}
-                    hasDiscount={product.discount_percent ? true : false}
-                    price={
-                      product.discount_price
-                        ? product.discount_price
-                        : product.price
-                    }
-                    discount={product.discount_percent}
-                    prevPrice={product.price}
-                    url={product.image_link ?? ""}
-                  />
-                </Suspense>
-              );
-            }
-            return null;
-          })}
-        </div>
-
+        <ProductsList products={products} numShowProducts={numShowProducts} />
         <div className="products-navigation">
           {currentPage > 1 && (
             <button

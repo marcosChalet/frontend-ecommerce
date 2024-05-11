@@ -28,15 +28,6 @@
   flex-direction: column;
 }
 
-.products-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 3.2rem;
-  position: relative;
-}
-
 .our-products-title {
   margin-bottom: 2.5rem;
   font-weight: 700;
