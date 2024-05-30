@@ -43,7 +43,7 @@ export default function SingleProduct() {
     async function getProducts() {
       try {
         const products = await axios.get(
-          `${PRODUCTS_URL}/?page=1&perPage=8&order=asc&orderType=category_id&category=${productData.data.category_id}`
+          `${PRODUCTS_URL}?page=1&perPage=8&sortType=asc&category=${productData.data.category_id}`
         );
 
         setProducts(products.data.products);

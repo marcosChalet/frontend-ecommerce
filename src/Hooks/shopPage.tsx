@@ -43,21 +43,22 @@ export default function usePagination() {
     orderType: "price" | "discount_percent" = "price"
   ) {
     try {
-      const products: { data: PaginationData & { products: Product[] } } =
-        await axios.get(
-          byCategory.current
-            ? `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}&orderType=${orderType}&category=${categoryId.current}`
-            : `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&order=${order}&orderType=${orderType}`
-        );
+      const products: {
+        data: { pagination: PaginationData } & { products: Product[] };
+      } = await axios.get(
+        byCategory.current
+          ? `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&orderBy=${orderType}&sortType=${order}&category=${categoryId.current}`
+          : `${PRODUCTS_URL}?page=${page}&perPage=${perPage}&orderBy=${orderType}&sortType=${order}`
+      );
 
       const pageData: PaginationData = {
-        hasNextPage: products.data.hasNextPage,
-        hasPrevPage: products.data.hasPrevPage,
-        nextPage: products.data.nextPage,
-        pageCount: products.data.pageCount,
-        prevPage: products.data.prevPage,
-        productCount: products.data.productCount,
-        totalProducts: products.data.totalProducts,
+        hasNextPage: products.data.pagination.hasNextPage,
+        hasPrevPage: products.data.pagination.hasPrevPage,
+        nextPage: products.data.pagination.nextPage,
+        pageCount: products.data.pagination.pageCount,
+        prevPage: products.data.pagination.prevPage,
+        productCount: products.data.pagination.productCount,
+        totalProducts: products.data.pagination.totalProducts,
       };
 
       return { products: products.data.products, pageData };
